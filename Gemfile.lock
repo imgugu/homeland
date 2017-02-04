@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/rails-engine/actionstore.git
+  revision: 92679b8bfd287fac92b488c4848678426100276d
+  specs:
+    actionstore (0.1.0)
+      rails (>= 4.2.0, < 5.1)
+
 GEM
   remote: https://gems.ruby-china.org/
   specs:
@@ -414,6 +421,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionstore!
   auto-space
   better_errors
   binding_of_caller

@@ -427,7 +427,7 @@ describe User, type: :model do
       user.block_node(1)
       expect(user.blocked_node_ids).to eq [1]
       user.block_node(2)
-      expect(user.blocked_node_ids).to eq [1, 2]
+      expect(user.blocked_node_ids).to include(1, 2)
       user.unblock_node(2)
       expect(user.blocked_node_ids).to eq [1]
     end
@@ -442,7 +442,7 @@ describe User, type: :model do
       user.block_user(1)
       expect(user.blocked_user_ids).to eq [1]
       user.block_user(2)
-      expect(user.blocked_user_ids).to eq [1, 2]
+      expect(user.blocked_user_ids).to include(1, 2)
       user.unblock_user(2)
       expect(user.blocked_user_ids).to eq [1]
     end
@@ -456,7 +456,7 @@ describe User, type: :model do
     it 'should work' do
       u1.follow_user(u2)
       u1.follow_user(u3)
-      expect(u1.following_ids).to eq [u2.id, u3.id]
+      expect(u1.following_ids).to include(u2.id, u3.id)
       expect(u2.follower_ids).to eq [u1.id]
       expect(u3.follower_ids).to eq [u1.id]
       # followed?
@@ -465,7 +465,7 @@ describe User, type: :model do
       expect(u2.followed?(u1)).to eq false
       # Follow again will not duplicate
       u1.follow_user(u2)
-      expect(u1.following_ids).to eq [u2.id, u3.id]
+      expect(u1.following_ids).to include(u2.id, u3.id)
       expect(u2.follower_ids).to eq [u1.id]
 
       # Unfollow

@@ -231,7 +231,7 @@ class Topic < ApplicationRecord
     topic = Topic.find_by_id(topic_id)
     return unless topic && topic.user
 
-    follower_ids = topic.user.follower_ids.uniq
+    follower_ids = topic.user.followers.pluck(:id).uniq
     return if follower_ids.empty?
 
     notified_user_ids = topic.mentioned_user_ids
