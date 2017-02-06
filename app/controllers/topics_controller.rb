@@ -16,8 +16,8 @@ class TopicsController < ApplicationController
     @topics = Topic.last_actived.without_suggest
     @topics =
       if current_user
-        @topics.without_nodes(current_user.blocked_node_ids)
-          .without_users(current_user.blocked_user_ids)
+        @topics.without_nodes(current_user.block_node_ids)
+          .without_users(current_user.block_user_ids)
       else
         @topics.without_hide_nodes
       end
@@ -231,7 +231,7 @@ class TopicsController < ApplicationController
     # 是否关注过
     @has_followed = @topic.followed?(current_user.id)
     # 是否收藏
-    @has_favorited = current_user.favorited_topic?(@topic.id)
+    @has_favorited = current_user.favorite_topic?(@topic.id)
   end
 
   def set_special_node_active_menu

@@ -73,12 +73,6 @@ ActiveRecord::Schema.define(version: 20170204090809) do
     t.index ["name"], name: "index_locations_on_name", using: :btree
   end
 
-  create_table "monkeys", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "new_notifications", force: :cascade do |t|
     t.integer  "user_id",            null: false
     t.integer  "actor_id"
@@ -267,14 +261,6 @@ ActiveRecord::Schema.define(version: 20170204090809) do
     t.index ["user_id"], name: "index_team_users_on_user_id", using: :btree
   end
 
-  create_table "test_documents", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "mentioned_user_ids", default: [],              array: true
-    t.text     "body"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
-
   create_table "topics", force: :cascade do |t|
     t.integer  "user_id",                               null: false
     t.integer  "node_id",                               null: false
@@ -362,7 +348,7 @@ ActiveRecord::Schema.define(version: 20170204090809) do
     t.integer  "replies_count",                      default: 0,     null: false
     t.integer  "favorite_topic_ids",                 default: [],                 array: true
     t.integer  "blocked_node_ids",                   default: [],                 array: true
-    t.integer  "blocked_user_ids",                   default: [],                 array: true
+    t.integer  "block_user_ids",                   default: [],                 array: true
     t.integer  "following_ids",                      default: [],                 array: true
     t.integer  "follower_ids",                       default: [],                 array: true
     t.string   "type",                   limit: 20
@@ -379,13 +365,4 @@ ActiveRecord::Schema.define(version: 20170204090809) do
     t.index ["login"], name: "index_users_on_login", using: :btree
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   end
-
-  create_table "walking_deads", force: :cascade do |t|
-    t.string   "name"
-    t.string   "tag"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
 end

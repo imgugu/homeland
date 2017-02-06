@@ -80,7 +80,7 @@ module UsersHelper
   def block_node_tag(node)
     return '' if current_user.blank?
     return '' if node.blank?
-    blocked = current_user.blocked_node_ids.include?(node.id)
+    blocked = current_user.block_node_ids.include?(node.id)
     class_names = 'btn btn-default btn-sm button-block-node'
     icon = '<i class="fa fa-eye-slash"></i>'
     if blocked
@@ -94,7 +94,7 @@ module UsersHelper
     return '' if current_user.blank?
     return '' if user.blank?
     return '' if current_user.id == user.id
-    blocked = current_user.blocked_user_ids.include?(user.id)
+    blocked = current_user.block_user_ids.include?(user.id)
     class_names = 'button-block-user btn btn-default btn-block'
     icon = '<i class="fa fa-eye-slash"></i>'
     if blocked

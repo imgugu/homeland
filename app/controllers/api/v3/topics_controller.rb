@@ -25,8 +25,8 @@ module Api
         if params[:node_id].blank?
           @topics = Topic
           if current_user
-            @topics = @topics.without_nodes(current_user.blocked_node_ids)
-            @topics = @topics.without_users(current_user.blocked_user_ids)
+            @topics = @topics.without_nodes(current_user.block_node_ids)
+            @topics = @topics.without_users(current_user.block_user_ids)
           else
             @topics = @topics.without_hide_nodes
           end
@@ -64,7 +64,7 @@ module Api
           current_user.read_topic(@topic)
           @meta[:followed] = @topic.followed?(current_user.id)
           @meta[:liked] = current_user.liked?(@topic)
-          @meta[:favorited] = current_user.favorited_topic?(@topic.id)
+          @meta[:favorited] = current_user.favorite_topic?(@topic.id)
         end
       end
 

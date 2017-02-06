@@ -301,7 +301,7 @@ describe User, type: :model do
       expect(user.favorite_topic(nil)).to eq(false)
       expect(user.favorite_topic(topic.id.to_s)).to eq(false)
       expect(user.favorite_topic_ids.include?(topic.id)).to eq(true)
-      expect(user.favorited_topic?(topic.id)).to eq(true)
+      expect(user.favorite_topic?(topic.id)).to eq(true)
     end
 
     it 'should unfavorite a topic' do
@@ -309,7 +309,7 @@ describe User, type: :model do
       expect(user.favorite_topic_ids.include?(topic.id)).to eq(false)
       expect(user.unfavorite_topic(nil)).to eq(false)
       expect(user.unfavorite_topic(topic.id.to_s)).to eq(true)
-      expect(user.favorited_topic?(topic.id)).to eq(false)
+      expect(user.favorite_topic?(topic.id)).to eq(false)
     end
   end
 
@@ -423,13 +423,7 @@ describe User, type: :model do
 
     it 'should work' do
       user.block_node(1)
-      expect(user.blocked_node_ids).to eq [1]
-      user.block_node(1)
-      expect(user.blocked_node_ids).to eq [1]
-      user.block_node(2)
-      expect(user.blocked_node_ids).to include(1, 2)
-      user.unblock_node(2)
-      expect(user.blocked_node_ids).to eq [1]
+      expect(user.block_nodes.collect(&:id)).to eq [1]
     end
   end
 
@@ -438,13 +432,8 @@ describe User, type: :model do
 
     it 'should work' do
       user.block_user(1)
-      expect(user.blocked_user_ids).to eq [1]
-      user.block_user(1)
-      expect(user.blocked_user_ids).to eq [1]
       user.block_user(2)
-      expect(user.blocked_user_ids).to include(1, 2)
-      user.unblock_user(2)
-      expect(user.blocked_user_ids).to eq [1]
+      expect(user.block_users.collect(&:id)).to eq [1, 2]
     end
   end
 
@@ -456,29 +445,24 @@ describe User, type: :model do
     it 'should work' do
       u1.follow_user(u2)
       u1.follow_user(u3)
-      expect(u1.following_ids).to include(u2.id, u3.id)
-      expect(u2.follower_ids).to eq [u1.id]
-      expect(u3.follower_ids).to eq [u1.id]
-      # followed?
-      expect(u1.followed?(u2)).to eq true
-      expect(u1.followed?(u2.id)).to eq true
-      expect(u2.followed?(u1)).to eq false
-      # Follow again will not duplicate
-      u1.follow_user(u2)
-      expect(u1.following_ids).to include(u2.id, u3.id)
-      expect(u2.follower_ids).to eq [u1.id]
+      expect(u1.follow_user_ids).to include(u2.id, u3.id)
+      expect(u2.follow_by_user_ids).to eq [u1.id]
+      expect(u3.follow_by_user_ids).to eq [u1.id]
 
       # Unfollow
       u1.unfollow_user(u3)
-      expect(u1.following_ids).to eq [u2.id]
-      expect(u3.follower_ids).to eq []
+      expect(u1.follow_user_ids).to eq [u2.id]
+      u3.reload
+      expect(u3.follow_by_user_ids).to eq []
     end
   end
 
   describe '.favorites_count' do
-    let(:u1) { create :user, favorite_topic_ids: [1, 2] }
+    let(:u1) { create :user }
 
     it 'should work' do
+      u1.favroite_topic(1)
+      u1.favroite_topic(2)
       expect(u1.favorites_count).to eq(2)
     end
   end

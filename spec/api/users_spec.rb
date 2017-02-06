@@ -273,7 +273,7 @@ describe 'API V3', 'users', type: :request do
       expect(response.status).to eq 200
       expect(json['ok']).to eq 1
       current_user.reload
-      expect(current_user.blocked_user?(user)).to eq true
+      expect(current_user.block_user?(user)).to eq true
     end
 
     it 'should unfollow' do
@@ -283,7 +283,7 @@ describe 'API V3', 'users', type: :request do
       expect(response.status).to eq 200
       expect(json['ok']).to eq 1
       current_user.reload
-      expect(current_user.blocked_user?(user)).to eq false
+      expect(current_user.block_user?(user)).to eq false
     end
   end
 end

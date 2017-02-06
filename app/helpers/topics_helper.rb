@@ -24,7 +24,7 @@ module TopicsHelper
     return '' if owner?(topic)
     opts[:class] ||= ''
     class_name = 'follow'
-    class_name += ' active' if topic.follower_ids.include?(current_user.id)
+    class_name += ' active' if topic.follow_by_user_ids.include?(current_user.id)
     if opts[:class].present?
       class_name += ' ' + opts[:class]
     end

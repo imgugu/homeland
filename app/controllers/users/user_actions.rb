@@ -57,7 +57,7 @@ module Users
         render_404
       end
 
-      @blocked_users = User.where(id: current_user.blocked_user_ids).paginate(page: params[:page], per_page: 20)
+      @block_users = User.where(id: current_user.block_user_ids).paginate(page: params[:page], per_page: 20)
     end
 
     def follow
@@ -71,12 +71,12 @@ module Users
     end
 
     def followers
-      @users = @user.followers.fields_for_list.paginate(page: params[:page], per_page: 60)
+      @users = @user.follow_by_users.fields_for_list.paginate(page: params[:page], per_page: 60)
       fresh_when([@users])
     end
 
     def following
-      @users = @user.following.fields_for_list.paginate(page: params[:page], per_page: 60)
+      @users = @user.follow_users.fields_for_list.paginate(page: params[:page], per_page: 60)
       render template: '/users/followers' if stale?(etag: [@users], template: 'users/followers')
     end
 

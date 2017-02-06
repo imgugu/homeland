@@ -35,7 +35,7 @@ module Api
 
         if current_user
           @meta[:followed] = current_user.followed?(@user)
-          @meta[:blocked] = current_user.blocked_user?(@user)
+          @meta[:blocked] = current_user.block_user?(@user)
         end
       end
 
@@ -112,7 +112,7 @@ module Api
         optional! :offset, type: Integer, default: 0
         optional! :limit, type: Integer, default: 20, values: 1..150
 
-        @users = @user.followers.fields_for_list.offset(params[:offset]).limit(params[:limit])
+        @users = @user.follow_by_users.fields_for_list.offset(params[:offset]).limit(params[:limit])
       end
 
       # 获取某个用户的关注者列表
@@ -125,7 +125,7 @@ module Api
         optional! :offset, type: Integer, default: 0
         optional! :limit, type: Integer, default: 20, values: 1..150
 
-        @users = @user.following.fields_for_list.offset(params[:offset]).limit(params[:limit])
+        @users = @user.follow_uesrs.fields_for_list.offset(params[:offset]).limit(params[:limit])
       end
 
       # 获取用户的已屏蔽的人（只能获取自己的）
@@ -138,9 +138,9 @@ module Api
         optional! :offset, type: Integer, default: 0
         optional! :limit, type: Integer, default: 20, values: 1..150
 
-        raise AccessDenied.new('不可以获取其他人的 blocked_users 列表。') if current_user.id != @user.id
+        raise AccessDenied.new('不可以获取其他人的 block_users 列表。') if current_user.id != @user.id
 
-        user_ids = current_user.blocked_user_ids[params[:offset].to_i, params[:limit].to_i]
+        user_ids = current_user.block_user_ids[params[:offset].to_i, params[:limit].to_i]
         @users = User.where(id: user_ids)
       end
 

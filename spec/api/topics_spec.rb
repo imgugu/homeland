@@ -425,7 +425,7 @@ describe 'API V3', 'topics', type: :request do
       t = create(:topic, title: 'new topic 2')
       post "/api/v3/topics/#{t.id}/follow.json"
       expect(response.status).to eq(200)
-      expect(t.reload.follower_ids).to include(current_user.id)
+      expect(t.reload.follow_by_user_ids).to include(current_user.id)
     end
   end
 
@@ -435,7 +435,7 @@ describe 'API V3', 'topics', type: :request do
       t = create(:topic, title: 'new topic 2')
       post "/api/v3/topics/#{t.id}/unfollow.json"
       expect(response.status).to eq(200)
-      expect(t.reload.follower_ids).not_to include(current_user.id)
+      expect(t.reload.follow_by_user_ids).not_to include(current_user.id)
     end
   end
 

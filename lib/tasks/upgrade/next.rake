@@ -26,14 +26,14 @@ def move_data_from_users
         end
         u.update_attributes(followers_count: u[:follower_ids].count, following_count: u[:following_ids].count)
 
-        # blocked_user_ids
+        # block_user_ids
         default_action = {
           action_type: 'block',
           target_type: 'User',
           user_id: u.id
         }
         puts "User:#{u.id} block users"
-        u[:blocked_user_ids].each do |uid|
+        u[:block_user_ids].each do |uid|
           puts "  Add to: #{uid}"
           action = default_action.merge(target_id: uid)
           worker.add(action)
